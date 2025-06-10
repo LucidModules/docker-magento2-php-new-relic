@@ -3,6 +3,8 @@ ARG NEW_RELIC_VERSION=11.9.0.23
 
 FROM php:${PHP_VERSION}-fpm
 
+ARG NEW_RELIC_VERSION
+
 RUN apt update -y \
     && apt install -y \
         zlib1g-dev \
@@ -34,6 +36,6 @@ RUN apt update -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /usr/local/lib/php/extensions/newrelic \
-    && curl -L --fail -v https://github.com/newrelic/newrelic-php-agent/archive/refs/tags/v${NEW_RELIC_VERSION}.tar.gz | tar zxf - -C /usr/local/lib/php/extensions/newrelic --strip-components 1 \
+    && curl -L --fail -v "https://github.com/newrelic/newrelic-php-agent/archive/refs/tags/v${NEW_RELIC_VERSION}.tar.gz" | tar zxf - -C /usr/local/lib/php/extensions/newrelic --strip-components 1 \
     && cd /usr/local/lib/php/extensions/newrelic  \
     && NR_INSTALL_SILENT=1 ./newrelic-install install

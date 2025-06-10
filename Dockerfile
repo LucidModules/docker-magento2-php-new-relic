@@ -1,4 +1,5 @@
 ARG PHP_VERSION=8.3.21
+ARG NEW_RELIC_VERSION=11.9.0.23
 
 FROM php:${PHP_VERSION}-fpm
 
@@ -31,3 +32,8 @@ RUN apt update -y \
         xsl \
         zip \
     && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /usr/local/lib/php/extensions/newrelic \
+    && curl https://download.newrelic.com/php_agent/archive/${NEW_RELIC_VERSION}/newrelic-php5-${NEW_RELIC_VERSION}-linux.tar.gz | tar zxf - -C /usr/local/lib/php/extensions/newrelic --strip-components 1 \
+    && cd /usr/local/lib/php/extensions/newrelic  \
+    && NR_INSTALL_SILENT=1 ./newrelic-install install
